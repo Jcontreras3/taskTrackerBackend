@@ -8,7 +8,7 @@ namespace taskTrackerBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CreateAccountController : ControllerBase
+    public class TaskTrackerController : ControllerBase
     {
         
     }
