@@ -23,30 +23,30 @@ namespace taskTrackerBackend.Services
             _context = context;
         }
 
-        // public bool DoesUserExist(string? Username)
-        // {
-        //     return _context.userInfo.SingleOrDefault(user => user.Username == Username) != null;
-        // }
-        // public bool AddUSer(CreateAccountDTO UserToAdd)
-        // {
-        //     bool result = false;
+        public bool DoesUserExist(string? Username)
+        {
+            return _context.UserInfo.SingleOrDefault(user => user.Username == Username) != null;
+        }
+        public bool AddUser(CreateAccountDTO UserToAdd)
+        {
+            bool result = false;
 
-        //     if (!DoesUserExist(UserToAdd.Username))
-        //     {
-        //         UserModel newUser = new UserModel();
+            if (!DoesUserExist(UserToAdd.Username))
+            {
+                UserModel newUser = new UserModel();
 
-        //         var hashPassword = HashPassword(UserToAdd.Password);
-        //         newUser.Id = UserToAdd.Id;
-        //         newUser.Username = UserToAdd.Username;
-        //         newUser.Salt = hashPassword.Salt;
-        //         newUser.Hash = hashPassword.Hash;
+                var hashPassword = HashPassword(UserToAdd.Password);
+                newUser.Id = UserToAdd.Id;
+                newUser.Username = UserToAdd.Username;
+                newUser.Salt = hashPassword.Salt;
+                newUser.Hash = hashPassword.Hash;
 
-        //         _context.Add(newUser);
+                _context.Add(newUser);
 
-        //         result = _context.SaveChanges() != 0;
-        //     }
-        //     return result;
-        // }
+                result = _context.SaveChanges() != 0;
+            }
+            return result;
+        }
 
         public PasswordDTO HashPassword(string password)
         {
@@ -67,16 +67,9 @@ namespace taskTrackerBackend.Services
             return newHashedPassword;
 
 
-        }
-
-        //  public bool UpdateUser(UserModel userToUpdate)
-        // {
-        //     // This one is sending over the whole object to be updated
-        //     _context.Update<UserModel>(userToUpdate);
-        //     return _context.SaveChanges() != 0;
-        // }
-
-        public bool VerifyUserPassword(string? Password, string? storedHash, string? storedSalt)
+        } 
+        
+         public bool VerifyUserPassword(string? Password, string? storedHash, string? storedSalt)
         {
             // get our existing Sal and change it to base 64 string
             var SaltBytes = Convert.FromBase64String(storedSalt);
@@ -88,5 +81,77 @@ namespace taskTrackerBackend.Services
 
             return newHash == storedHash;
         }
+
+        public IActionResult Login(LoginDTO User){
+            IActionResult Result = Unauthorized();
+            if(DoesUserExist(User.Username)){
+                UserModel foundUser = GetUserByUsername(User.Username);
+                if(VerifyUserPassword(User.Password, foundUser.Hash, foundUser.Salt)){
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                     var tokeOptions = new JwtSecurityToken(
+                        issuer: "http://localhost:5000",
+                        audience: "http://localhost:5000",
+                        claims: new List<Claim>(),
+                        expires: DateTime.Now.AddMinutes(30),
+                        signingCredentials: signinCredentials
+                    );
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+                    Result = Ok(new { Token = tokenString });
+                }
+            }
+            return Result;
+        }
+
+        public UserModel GetUserByUsername(string? username){
+            return _context.UserInfo.SingleOrDefault(user => user.Username == username);
+        }
+
+         public bool UpdateUser(UserModel userToUpdate)
+        {
+            // This one is sending over the whole object to be updated
+            _context.Update<UserModel>(userToUpdate);
+            return _context.SaveChanges() != 0;
+        }
+
+        public bool UpdateUsername(int id, string username){
+            UserModel foundUser = GetUserById(id);
+            bool result = false;
+            if(foundUser != null){
+                foundUser.Username = username;
+                _context.Update<UserModel>(foundUser);
+                result = _context.SaveChanges() != 0;
+            }
+            return result;
+        }
+
+        public UserModel GetUserById(int id){
+            return _context.UserInfo.SingleOrDefault(user => user.Id == id);
+        }
+
+        public bool DeleteUser(string userToDelete){
+            UserModel foundUser = GetUserByUsername(userToDelete);
+            bool result = false;
+            if(foundUser != null){
+                _context.Remove<UserModel>(foundUser);
+                result = _context.SaveChanges() != 0;
+
+            }
+            return result;
+        }
+
+
+        public UserIdDTO GetUserIdDTOByUsername(string username){
+            var UserInfo = new UserIdDTO();
+            var foundUSer = _context.UserInfo.SingleOrDefault(user => user.Username == username);
+            UserInfo.UserId = foundUSer.Id;
+            UserInfo.PublisherName = foundUSer.Username;
+            return UserInfo;
+        }
+
+      
+        
+
+
     }
 }

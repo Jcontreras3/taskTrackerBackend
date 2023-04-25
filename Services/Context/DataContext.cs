@@ -21,7 +21,7 @@ namespace taskTrackerBackend.Services.Context
 
         //   public DbSet<UserIdDTO> UserInfo { get; set; }
 
-       public DbSet<AdminLoginDTO> AdminLoginInfo { get; set; }
+    //    public DbSet<AdminLoginDTO> AdminLoginInfo { get; set; }
 
 
 //constructor below
