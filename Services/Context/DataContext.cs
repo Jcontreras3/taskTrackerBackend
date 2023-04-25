@@ -11,13 +11,15 @@ namespace taskTrackerBackend.Services.Context
     {
          public DbSet<UserModel> UserInfo { get; set; }
 
-           public DbSet<CreateAccountDTO> CreateAccountInfo { get; set; }
+ 
 
-           public DbSet<LoginDTO> LoginInfo { get; set; }
+        //    public DbSet<CreateAccountDTO> CreateAccountInfo { get; set; }
 
-          public DbSet<PasswordDTO> PasswordInfo { get; set; }
+        //    public DbSet<LoginDTO> LoginInfo { get; set; }
 
-          public DbSet<UserIdDTO> UserInfo { get; set; }
+        //   public DbSet<PasswordDTO> PasswordInfo { get; set; }
+
+        //   public DbSet<UserIdDTO> UserInfo { get; set; }
 
        public DbSet<AdminLoginDTO> AdminLoginInfo { get; set; }
 
