@@ -18,5 +18,17 @@ namespace taskTrackerBackend.Controllers
         public TaskTrackerController(TaskTrackerService dataFromService){
             _data = dataFromService;
         }
+
+        [HttpPost]
+        [Route("AddTaskItem")]
+        public bool AddTaskItem(TaskItemModel newTaskItem){
+            return _data.AddTaskItem(newTaskItem);
+        }
+
+        [HttpGet]
+        [Route("GetAllTaskItems")]
+        public IEnumerable<TaskItemModel> GetAllTaskItems(){
+            return _data.GetAllTaskItems();
+        }
     }
 }
