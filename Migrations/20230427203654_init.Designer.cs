@@ -11,7 +11,7 @@ using taskTrackerBackend.Services.Context;
 namespace taskTrackerBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230425183257_init")]
+    [Migration("20230427203654_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -23,6 +23,43 @@ namespace taskTrackerBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("taskTrackerBackend.Models.TaskItemModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Date")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isProgress")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isToDo")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TaskInfo");
+                });
 
             modelBuilder.Entity("taskTrackerBackend.Models.UserModel", b =>
                 {
