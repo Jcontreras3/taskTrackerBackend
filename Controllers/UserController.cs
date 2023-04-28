@@ -57,5 +57,11 @@ namespace taskTrackerBackend.Controllers
         public UserIdDTO GetUserIdDTOByUsername(string username){
             return _data.GetUserIdDTOByUsername(username);
         }
+        
+             [HttpGet]
+        [Route("GetAllUser")]
+       public IEnumerable<UserModel> GetAllUser(){
+            return _data.GetAllUser();
+        }
     }
 }

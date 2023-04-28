@@ -149,8 +149,18 @@ namespace taskTrackerBackend.Services
             return UserInfo;
         }
 
+// public UserModel GetAllUser(){
+//             var UserInfo = new UserIdDTO();
+//             var foundUSer = _context.UserInfo.SingleOrDefault(user => user.Username == username);
+//             UserInfo.UserId = foundUSer.Id;
+//             UserInfo.PublisherName = foundUSer.Username;
+//             return UserInfo;
+//         }
       
-        
+          public IEnumerable<UserModel> GetAllUser(){
+            return _context.UserInfo;
+        }
+
 
 
     }
