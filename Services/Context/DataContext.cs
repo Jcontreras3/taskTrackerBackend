@@ -9,9 +9,9 @@ namespace taskTrackerBackend.Services.Context
 {
     public class DataContext : DbContext
     {
-         public DbSet<UserModel> UserInfo { get; set; }
+        public DbSet<UserModel> UserInfo { get; set; }
 
- 
+        public DbSet<TaskItemModel> TaskInfo { get; set; }
 
         //    public DbSet<CreateAccountDTO> CreateAccountInfo { get; set; }
 
@@ -21,16 +21,17 @@ namespace taskTrackerBackend.Services.Context
 
         //   public DbSet<UserIdDTO> UserInfo { get; set; }
 
-    //    public DbSet<AdminLoginDTO> AdminLoginInfo { get; set; }
+        //    public DbSet<AdminLoginDTO> AdminLoginInfo { get; set; }
 
 
-//constructor below
-public DataContext(DbContextOptions options): base(options)
-{}
+        //constructor below
+        public DataContext(DbContextOptions options) : base(options)
+        { }
 
-protected override void OnModelCreating(ModelBuilder builder){
-    base.OnModelCreating(builder);
-}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
 
- }
+    }
 }
