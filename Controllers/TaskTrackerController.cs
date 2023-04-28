@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using taskTrackerBackend.Models;
 using taskTrackerBackend.Services;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace taskTrackerBackend.Controllers
 {
@@ -29,6 +29,12 @@ namespace taskTrackerBackend.Controllers
         [Route("GetAllTaskItems")]
         public IEnumerable<TaskItemModel> GetAllTaskItems(){
             return _data.GetAllTaskItems();
+        }
+
+        [HttpPut]
+        [Route("EditTaskItem")]
+        public bool EditTaskItem(TaskItemModel TaskUpdate){
+            return _data.EditTaskItem(TaskUpdate);
         }
     }
 }

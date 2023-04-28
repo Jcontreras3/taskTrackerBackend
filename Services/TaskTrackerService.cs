@@ -21,6 +21,12 @@ namespace taskTrackerBackend.Services
             return _context.TaskInfo;
         }
 
+         public bool EditTaskItem(TaskItemModel TaskUpdate)
+        {
+            _context.Update<TaskItemModel>(TaskUpdate);
+            return _context.SaveChanges() != 0;
+        }
+
 
     }
 }

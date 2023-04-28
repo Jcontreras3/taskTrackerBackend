@@ -67,9 +67,9 @@ namespace taskTrackerBackend.Services
             return newHashedPassword;
 
 
-        } 
-        
-         public bool VerifyUserPassword(string? Password, string? storedHash, string? storedSalt)
+        }
+
+        public bool VerifyUserPassword(string? Password, string? storedHash, string? storedSalt)
         {
             // get our existing Sal and change it to base 64 string
             var SaltBytes = Convert.FromBase64String(storedSalt);
@@ -82,20 +82,23 @@ namespace taskTrackerBackend.Services
             return newHash == storedHash;
         }
 
-        public IActionResult Login(LoginDTO User){
+        public IActionResult Login(LoginDTO User)
+        {
             IActionResult Result = Unauthorized();
-            if(DoesUserExist(User.Username)){
+            if (DoesUserExist(User.Username))
+            {
                 UserModel foundUser = GetUserByUsername(User.Username);
-                if(VerifyUserPassword(User.Password, foundUser.Hash, foundUser.Salt)){
+                if (VerifyUserPassword(User.Password, foundUser.Hash, foundUser.Salt))
+                {
                     var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
                     var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-                     var tokeOptions = new JwtSecurityToken(
-                        issuer: "http://localhost:5000",
-                        audience: "http://localhost:5000",
-                        claims: new List<Claim>(),
-                        expires: DateTime.Now.AddMinutes(30),
-                        signingCredentials: signinCredentials
-                    );
+                    var tokeOptions = new JwtSecurityToken(
+                       issuer: "http://localhost:5000",
+                       audience: "http://localhost:5000",
+                       claims: new List<Claim>(),
+                       expires: DateTime.Now.AddMinutes(30),
+                       signingCredentials: signinCredentials
+                   );
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                     Result = Ok(new { Token = tokenString });
                 }
@@ -103,21 +106,24 @@ namespace taskTrackerBackend.Services
             return Result;
         }
 
-        public UserModel GetUserByUsername(string? username){
+        public UserModel GetUserByUsername(string? username)
+        {
             return _context.UserInfo.SingleOrDefault(user => user.Username == username);
         }
 
-         public bool UpdateUser(UserModel userToUpdate)
+        public bool UpdateUser(UserModel userToUpdate)
         {
             // This one is sending over the whole object to be updated
             _context.Update<UserModel>(userToUpdate);
             return _context.SaveChanges() != 0;
         }
 
-        public bool UpdateUsername(int id, string username){
+        public bool UpdateUsername(int id, string username)
+        {
             UserModel foundUser = GetUserById(id);
             bool result = false;
-            if(foundUser != null){
+            if (foundUser != null)
+            {
                 foundUser.Username = username;
                 _context.Update<UserModel>(foundUser);
                 result = _context.SaveChanges() != 0;
@@ -125,14 +131,17 @@ namespace taskTrackerBackend.Services
             return result;
         }
 
-        public UserModel GetUserById(int id){
+        public UserModel GetUserById(int id)
+        {
             return _context.UserInfo.SingleOrDefault(user => user.Id == id);
         }
 
-        public bool DeleteUser(string userToDelete){
+        public bool DeleteUser(string userToDelete)
+        {
             UserModel foundUser = GetUserByUsername(userToDelete);
             bool result = false;
-            if(foundUser != null){
+            if (foundUser != null)
+            {
                 _context.Remove<UserModel>(foundUser);
                 result = _context.SaveChanges() != 0;
 
@@ -141,7 +150,8 @@ namespace taskTrackerBackend.Services
         }
 
 
-        public UserIdDTO GetUserIdDTOByUsername(string username){
+        public UserIdDTO GetUserIdDTOByUsername(string username)
+        {
             var UserInfo = new UserIdDTO();
             var foundUSer = _context.UserInfo.SingleOrDefault(user => user.Username == username);
             UserInfo.UserId = foundUSer.Id;
@@ -149,15 +159,16 @@ namespace taskTrackerBackend.Services
             return UserInfo;
         }
 
-// public UserModel GetAllUser(){
-//             var UserInfo = new UserIdDTO();
-//             var foundUSer = _context.UserInfo.SingleOrDefault(user => user.Username == username);
-//             UserInfo.UserId = foundUSer.Id;
-//             UserInfo.PublisherName = foundUSer.Username;
-//             return UserInfo;
-//         }
-      
-          public IEnumerable<UserModel> GetAllUser(){
+        // public UserModel GetAllUser(){
+        //             var UserInfo = new UserIdDTO();
+        //             var foundUSer = _context.UserInfo.SingleOrDefault(user => user.Username == username);
+        //             UserInfo.UserId = foundUSer.Id;
+        //             UserInfo.PublisherName = foundUSer.Username;
+        //             return UserInfo;
+        //         }
+
+        public IEnumerable<UserModel> GetAllUser()
+        {
             return _context.UserInfo;
         }
 
