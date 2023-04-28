@@ -11,7 +11,7 @@ using taskTrackerBackend.Services.Context;
 namespace taskTrackerBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230427203654_init")]
+    [Migration("20230428171519_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -48,6 +48,9 @@ namespace taskTrackerBackend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("isProgress")

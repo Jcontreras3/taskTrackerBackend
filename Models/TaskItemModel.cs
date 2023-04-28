@@ -16,7 +16,8 @@ namespace taskTrackerBackend.Models
         public bool isToDo { get; set; }
         public bool isProgress { get; set; }
         public bool isCompleted { get; set; }
+        public bool isDeleted { get; set; }
 
-       public TaskItemModel(){}
+        public TaskItemModel() { }
     }
 }

@@ -23,7 +23,8 @@ namespace taskTrackerBackend.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     isToDo = table.Column<bool>(type: "bit", nullable: false),
                     isProgress = table.Column<bool>(type: "bit", nullable: false),
-                    isCompleted = table.Column<bool>(type: "bit", nullable: false)
+                    isCompleted = table.Column<bool>(type: "bit", nullable: false),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

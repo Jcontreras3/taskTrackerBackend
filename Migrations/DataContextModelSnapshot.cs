@@ -47,6 +47,9 @@ namespace taskTrackerBackend.Migrations
                     b.Property<bool>("isCompleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("isProgress")
                         .HasColumnType("bit");
 

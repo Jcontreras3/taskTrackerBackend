@@ -27,6 +27,12 @@ namespace taskTrackerBackend.Services
             return _context.SaveChanges() != 0;
         }
 
+        public bool DeleteTaskItem(TaskItemModel TaskDelete){
+            TaskDelete.isDeleted = true;
+            _context.Update<TaskItemModel>(TaskDelete);
+            return _context.SaveChanges() != 0;
+        }
+
 
     }
 }

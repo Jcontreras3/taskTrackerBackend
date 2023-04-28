@@ -36,5 +36,11 @@ namespace taskTrackerBackend.Controllers
         public bool EditTaskItem(TaskItemModel TaskUpdate){
             return _data.EditTaskItem(TaskUpdate);
         }
+
+        [HttpPost]
+        [Route("DeleteTaskItem")]
+        public bool DeleteTaskItem(TaskItemModel TaskDelete){
+            return _data.DeleteTaskItem(TaskDelete);
+        }
     }
 }
